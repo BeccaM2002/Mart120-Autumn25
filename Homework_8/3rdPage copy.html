@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>3rd Page</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </head>
+<script> document.getElementById("mySubmit").addEventListener("click", function() {
+  const fName = document.getElementById("fName");
+  const Email = document.getElementById("Email");
+  const mySubmit = document.getElementById("mySubmit");
+
+  let allValid = true;
+
+  // Reset styles first
+  [fName, Email].forEach(input => input.style.border = "");
+  mySubmit.parentElement.style.color = "";
+
+  // Check text fields
+  if (fName.value.trim() === "") {
+    fName.style.border = "2px solid red";
+    if (allValid) fName.focus();
+    allValid = false;
+  }
+
+  if (ElementInternals.value.trim() === "") {
+    Email.style.border = "2px solid red";
+    if (allValid) Email.focus();
+    allValid = false;
+  }
+
+  // Check mySubmit
+  if (mySubmit.checked) {
+    mySubmit.parentElement.style.color = "red"; // highlight label in red
+    if (allValid) mySubmit.focus();
+    allValid = false;
+  }
+
+  if (allValid) {
+    alert("Form submitted successfully!");
+    // Here you could submit the form or continue logic
+  } else {
+    alert("Please fill in all required fields.");
+  }
+}); </script>
+
+</head>
+<body> 
+        <button type="button" class="btn">Basic</button>
+        <button type="button" class="btn btn-default">Default</button>
+        <button type="button" class="btn btn-primary">Primary</button>
+        <button type="button" class="btn btn-success">Success</button>
+        <button type="button" class="btn btn-info">Info</button>
+        <button type="button" class="btn btn-warning">Warning</button>
+        <button type="button" class="btn btn-danger">Danger</button>
+        <button type="button" class="btn btn-link">Link</button>
+        <br><br>
+    <title>3rd Page</title>
+<form action="nextpage.html" type="Post">
+    First Name: <input type="text" id="fName"><br>
+    Email: <input type="text" id="Email"><br>
+
+<h3>Do you accept the terms and conditions?</h3>
+<input type="checkbox" name="Accept" value="Accept">Accept
+<br>
+<button id="mySubmit" type="button">Submit</button>
+    <br><br>
+    <a href="Homework_6.html">Go Home</a>
+</body>
+</html>
