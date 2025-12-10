@@ -1,0 +1,208 @@
+let flakes = [];
+let flakeCount = 15;
+
+let hits = 0;      // number of flakes touched
+let misses = 0;    // number of flakes that fell offscreen
+let gameOver = false;
+
+let img1X = 100;
+let img1Y = 100;
+let imgSize = 80;
+
+let img2X = 300;
+let img2Y = 200;
+
+let costumes = [];
+let currentCostume = 0;
+
+let targetImg;
+let winImg, loseImg;
+let restartImg;
+
+let restartX, restartY, restartW, restartH;
+
+let touchCount = 0;
+let touchedLastFrame = false;
+
+function preload() {
+  // load player costumes
+  costumes.push(loadImage("costume1.png"));
+  costumes.push(loadImage("costume2.png"));
+  costumes.push(loadImage("costume3.png"));
+
+  // load target and win/lose images
+  targetImg = loadImage("target.png");
+  winImg = loadImage("win.png");
+  loseImg = loadImage("lose.png");
+  restartImg = loadImage("restart.png"); // restart button image
+}
+
+function setup() {
+  createCanvas(600, 400);
+
+  // create snowflakes
+  for (let i = 0; i < flakeCount; i++) {
+    flakes.push({
+      x: random(0, width - imgSize),
+      y: random(-height, 0),
+      speed: random(1, 3),
+      angle: random(TWO_PI),
+      rotateSpeed: random(0.01, 0.05)
+    });
+  }
+}
+
+function draw() {
+  background(220);
+
+  // STOP EVERYTHING IF GAME OVER
+  if (gameOver) {
+    drawEndScreen();
+    return;
+  }
+
+  // --- Player movement ---
+  if (keyIsDown(LEFT_ARROW)) img1X -= 3;
+  if (keyIsDown(RIGHT_ARROW)) img1X += 3;
+  if (keyIsDown(UP_ARROW)) img1Y -= 3;
+  if (keyIsDown(DOWN_ARROW)) img1Y += 3;
+
+  // --- Draw player and static target ---
+  image(costumes[currentCostume], img1X, img1Y, imgSize, imgSize);
+  image(targetImg, img2X, img2Y, imgSize, imgSize);
+
+  // --- Collision with static target ---
+  let touching = collideRectRect(
+    img1X, img1Y, imgSize, imgSize,
+    img2X, img2Y, imgSize, imgSize
+  );
+
+  if (touching && !touchedLastFrame) {
+    touchCount++;
+    if (touchCount % 5 === 0) {
+      currentCostume = (currentCostume + 1) % costumes.length;
+    }
+  }
+  touchedLastFrame = touching;
+
+  // --- Display counters ---
+  fill(0);
+  textSize(24);
+  text("Touches: " + touchCount, 20, 30);
+  text("Hits: " + hits, 20, 60);
+  text("Misses: " + misses, 20, 90);
+
+  // --- Snowflake logic ---
+  for (let f of flakes) {
+    // update position & rotation
+    f.y += f.speed;
+    f.angle += f.rotateSpeed;
+
+    // ❌ Miss logic
+    if (f.y > height) {
+      misses++;
+      resetFlake(f);
+    }
+
+    // ✔ Hit logic
+    if (collideRectRect(img1X, img1Y, imgSize, imgSize, f.x, f.y, imgSize, imgSize)) {
+      hits++;
+      resetFlake(f);
+    }
+
+    // draw rotated flake
+    push();
+    translate(f.x + imgSize / 2, f.y + imgSize / 2);
+    rotate(f.angle);
+    imageMode(CENTER);
+    image(targetImg, 0, 0, imgSize, imgSize);
+    pop();
+  }
+
+  // --- Win or Lose conditions ---
+  if (hits >= 30 || misses >= 10) {
+    gameOver = true;
+  }
+}
+
+// --- Reset a flake to top ---
+function resetFlake(f) {
+  f.y = -imgSize;
+  f.x = random(0, width - imgSize);
+  f.speed = random(1, 3);
+  f.rotateSpeed = random(0.01, 0.05);
+  f.angle = random(TWO_PI);
+}
+
+// --- Draw end screen ---
+function drawEndScreen() {
+  background(0, 150); // semi-transparent overlay
+  imageMode(CENTER);
+
+  // Draw win or lose image
+  if (hits >= 30) {
+    image(winImg, width / 2, height / 2 - 50, 400, 200);
+  } else {
+    image(loseImg, width / 2, height / 2 - 50, 400, 200);
+  }
+
+  // Draw restart button
+  restartW = 150;
+  restartH = 70;
+  restartX = width / 2;
+  restartY = height / 2 + 150;
+  image(restartImg, restartX, restartY, restartW, restartH);
+
+  // Instruction text
+  textAlign(CENTER, CENTER);
+  textSize(24);
+  fill(255);
+  text("Click the button to play again", width / 2, height / 2 + 220);
+}
+
+// --- Detect clicks on restart button ---
+function mousePressed() {
+  if (gameOver) {
+    if (
+      mouseX > restartX - restartW / 2 &&
+      mouseX < restartX + restartW / 2 &&
+      mouseY > restartY - restartH / 2 &&
+      mouseY < restartY + restartH / 2
+    ) {
+      restartGame();
+    }
+  }
+}
+
+// --- Restart game ---
+function restartGame() {
+  hits = 0;
+  misses = 0;
+  touchCount = 0;
+  gameOver = false;
+  currentCostume = 0;
+
+  // reset flakes
+  for (let f of flakes) {
+    f.y = random(-height, 0);
+    f.x = random(0, width - imgSize);
+    f.speed = random(1, 3);
+    f.angle = random(TWO_PI);
+    f.rotateSpeed = random(0.01, 0.05);
+  }
+
+  // reset player position
+  img1X = 100;
+  img1Y = 100;
+}
+
+// --- Collision function ---
+function collideRectRect(x1,y1,w1,h1, x2,y2,w2,h2){
+  return (
+    x1 < x2 + w2 &&
+    x1 + w1 > x2 &&
+    y1 < y2 + h2 &&
+    y1 + h1 > y2
+  );
+}
+
