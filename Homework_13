@@ -1,0 +1,236 @@
+var circlex = 100;
+var circley = 100;
+var diameter = 25;
+var x = 100;
+var y = 200;
+var i = 70;
+var o = 20;
+
+
+    var myxs = []; // create an array for the x coordinate
+    var myys = []; // create an array for the y coordinate
+    var myis = []; // create an array for the i coordinate
+    var myos = []; // create an array for the o coordinate
+
+let pinned = false;
+let pinf, pinh;
+
+function setup()
+{
+    createCanvas(800,600);
+  // create a for loop here to create the circles
+  
+        for(var k = 0; k < 2; k++)
+          
+          {
+            // get all the random numbers to create a circles
+            myxs[k] = getRandomNumber(800);
+            myys[k] = getRandomNumber(600);
+            myis[k] = getRandomNumber(100);
+            myos[k] = getRandomNumber(300);
+        }
+}
+
+function draw() 
+{
+ Circledraw();
+  
+ movement();
+  
+  movingrect();
+  
+  movingrect2();
+  
+  rectblock();
+}
+  
+  function rectblock() {
+  
+  
+    fill(300,0,0)
+  rect(0,580, 800, 40);
+  
+  if (pinned)
+    {
+      fill (0,0,300);
+      rect (pinf, pinh,200,50);
+      
+  }
+  
+    
+    for(var k = 0; k < myxs.length; k++)
+      {
+        // movingrect2 randomly using arrays
+  movingrect2(myxs[k], myys[k], myis[k],myos[k]/2, 50, 120, 120, 120, 50, 120);
+        }
+    for(var k = 1; k < myxs.length; k++)
+      {
+        // movingrect2 randomly using arrays
+  movingrect(myxs[k], myys[k], myis[k],myos[k]/2, 50, 120, 120, 120, 50, 120);
+        }
+  }
+    
+  function getRandomNumber(number)
+    {
+        return Math.floor(Math.random()*number)+10;
+    }  
+    
+  
+
+  function movingrect2()
+  {
+     fill(200, 100, 20);
+  rect(x, y, 200, 100);
+
+  if (x > 300) {
+    x = 50;
+  }
+  else if (x > 200) {
+    x += 5;
+  }
+  else if (x <= 300) {
+    x += 10;
+  } 
+ 
+if (y > 300) {
+    y = 50;
+  }
+  else if (y > 200) {
+    y += 1;
+    console.log("second else if for y");
+  } 
+  else if (y <= 300) {
+    y += 3;
+  }
+
+  if (diameter > 300) {
+    diameter = 25;
+  }
+  else if (diameter > 200) {
+    diameter += 4;
+    console.log("second else if for diameter");
+  } 
+  else if (diameter <= 300) {
+    diameter += 8;
+  } 
+  
+  }
+  
+  
+  function movingrect()
+  {
+     fill (0,300,0);
+  rect (i,o, 200,100);
+  
+  if(i <= 300)
+        {
+            i+=10;
+        }
+        else
+        {
+            i = 50;
+        }
+        if(o <= 300)
+        {
+            o+=3;
+        }
+        else
+        {
+            o = 50;
+        }
+        if(diameter <= 300)
+        {
+            diameter+=8;
+        }
+        else
+        {
+            diameter = 25;
+        }
+  }
+  
+  
+  function movement()
+  {
+    if (circlex >= 800) 
+      {
+        circlex = 50;
+      }
+
+      if (keyIsDown(83)) 
+      {
+        circley += 10;
+      } 
+      else if (keyIsDown(87)) 
+      {
+        circley -= 10;
+      }
+
+      if (circley >= 800) 
+      {
+        circley = 50;
+      }
+
+      if (diameter < 200) 
+      {
+        diameter += 2;
+      } 
+      else if (diameter >= 200) 
+      {
+        diameter = 25;
+     }
+  
+      if (circlex > 600 || circley > 600)
+      {
+        textSize (60);
+        fill(200,100,20);
+        text ('You Win!', 200, 200)
+        
+      }
+  }
+  
+  
+  function Circledraw()
+  {
+    background(0);
+   fill(200,70,29);
+   circle(circlex,circley,50);
+  }
+  
+  
+
+function keyPressed() 
+{
+  if (key == 'd') 
+  {
+    circlex+=30;
+  } 
+  else if (key == 'a') 
+  {
+    circlex-=30;
+  }
+  if (key == 'x') 
+  {
+    circley+=30;
+  } 
+  else if (key == 'w') 
+  {
+    circley-=30;
+  }
+   
+}
+
+function mouseClicked() 
+    {  
+      circlex = mouseX;
+      circley = mouseY;
+      
+      }
+
+function mousePressed() {
+  
+  pinf = mouseX;
+  pinh = mouseY;
+  
+  pinned = true;
+}
+    

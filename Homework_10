@@ -1,0 +1,56 @@
+var x = 100;
+var y = 155;
+var diameter = 50;
+
+var movement = 13;
+
+let size = 5;
+let growing = true;
+
+function setup() {
+  createCanvas(400, 400);
+
+}
+
+function draw() {
+  background(100);
+  rect(y,300,50,60);
+  y++;
+  
+  ellipse(175,200,200,250);
+  circle(x,y, diameter);
+ if (y <= 20)
+     {
+        y+=10;
+     }
+  square(150,250,50);
+  triangle(150,80,100,20,30,300);
+  triangle(150,75,250,20,350,300);
+  line(110, y, 120, 170);
+  y++;
+  line(230,y,210,160);
+  y++;
+  textSize(size);
+  text('Rebecca Madden', 270, 350);
+  if (growing) {
+    size += 0.5; // grow
+    if (size > 15) growing = false; // Switch
+  } else
+  {
+    size -= 0.5; //shrink
+    if (size < 10) growing = true; //Switch
+  }
+  text('Very Abstract', 20, 30); 
+  circle(230,y,50);
+  if(y > 90)
+    {
+        y++;
+    }
+    {
+       movement*=-1;
+    }
+    
+     y += movement;
+}
+
+

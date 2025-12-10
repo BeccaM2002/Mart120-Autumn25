@@ -1,0 +1,20 @@
+function setup() {
+  createCanvas(400, 400);
+}
+
+function draw() {
+  background(100);
+  rect(150,300,50,60);
+  ellipse(175,200,200,250);
+  circle(100,150,50);
+  circle(230,150,50);
+  square(150,250,50);
+  triangle(150,80,100,20,30,300);
+  triangle(150,75,250,20,350,300);
+  line(110, 160, 120, 170);
+  line(230,150,210,160);
+  text('Rebecca Madden', 270, 350);
+  text('Very Abstract', 20, 30);
+
+
+}
