@@ -48,18 +48,8 @@
     let touchCount = 0;
     let touchedLastFrame = false;
 
-    function preload() {
-      // load player costumes
-      costumes.push(loadImage("costume1.png"));
-      costumes.push(loadImage("costume2.png"));
-      costumes.push(loadImage("costume3.png"));
 
-      // load target and win/lose/restart images
-      targetImg = loadImage("target.png");
-      winImg = loadImage("win.png");
-      loseImg = loadImage("lose.png");
-      restartImg = loadImage("restart.png");
-    }
+    
 
     function setup() {
       createCanvas(600, 400);
@@ -73,6 +63,18 @@
           rotateSpeed: random(0.01, 0.05)
         });
       }
+
+      // load player costumes
+      costumes.push(loadImage("costume1.png"));
+      costumes.push(loadImage("costume2.png"));
+      costumes.push(loadImage("costume3.png"));
+
+      // load target and win/lose/restart images
+      targetImg = loadImage("target.png");
+      winImg = loadImage("win.png");
+      loseImg = loadImage("lose.png");
+      restartImg = loadImage("restart.png");
+      
     }
 
     function draw() {
